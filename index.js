@@ -32,6 +32,7 @@ function handleLikeClick(tweetId) {
   }
 
   targetTweetObject.isLiked = !targetTweetObject.isLiked;
+
   render();
 }
 
@@ -47,6 +48,7 @@ function handleRetweetClick(tweetId) {
   }
 
   targetTweetObject.isRetweeted = !targetTweetObject.isRetweeted;
+
   render();
 }
 
@@ -70,7 +72,6 @@ function handleTweetBtnClick() {
       uuid: uuidv4(),
     });
   }
-  localStorage.setItem("myTweets", JSON.stringify(tweetsData));
   render();
   tweetInput.value = "";
 }
@@ -84,7 +85,8 @@ function getFeedHtml() {
 
     if (tweet.isLiked) {
       likeIconClass = "liked";
-    } else if (tweet.isRetweeted) {
+    }
+    if (tweet.isRetweeted) {
       retweetIconClass = "retweeted";
     }
 
@@ -138,6 +140,7 @@ ${repliesHtml}
 }
 
 function render() {
+  localStorage.setItem("myTweets", JSON.stringify(tweetsData));
   document.getElementById("feed").innerHTML = getFeedHtml();
 }
 
