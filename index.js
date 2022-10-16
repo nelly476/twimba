@@ -1,5 +1,13 @@
-import { tweetsData } from "/data.js";
+import { tweetsData as tweets } from "/data.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
+
+let tweetsData = JSON.parse(JSON.stringify(tweets));
+
+const tweetsFromLocalStorage = JSON.parse(localStorage.getItem("myTweets"));
+
+if (tweetsFromLocalStorage) {
+  tweetsData = tweetsFromLocalStorage;
+}
 
 document.addEventListener("click", function (e) {
   if (e.target.dataset.like) {
@@ -62,6 +70,7 @@ function handleTweetBtnClick() {
       uuid: uuidv4(),
     });
   }
+  localStorage.setItem("myTweets", JSON.stringify(tweetsData));
   render();
   tweetInput.value = "";
 }
