@@ -138,9 +138,15 @@ function getFeedHtml() {
 `;
       });
     }
-    repliesHtml += `    
-            <div class="reply">
-                <textarea placeholder="Add a reply..." id="tweet-input-${tweet.uuid}"></textarea>
+    repliesHtml += `
+    <div class="tweet-reply">
+    <div class="tweet-inner">    
+            <img src=/images/scrimbalogo.png class="profile-pic">
+            <div>
+                <p class="handle">@Scrimba</p>
+                <textarea placeholder="Reply..." id="tweet-input-${tweet.uuid}"></textarea>
+                </div>
+                </div>   
                 <button 
                     class="reply-btn" 
                     data-comment="${tweet.uuid}"
