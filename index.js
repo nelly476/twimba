@@ -18,6 +18,8 @@ document.addEventListener("click", function (e) {
     handleReplyClick(e.target.dataset.reply);
   } else if (e.target.id === "tweet-btn") {
     handleTweetBtnClick();
+  } else if (e.target.id === "addTweetComment") {
+    addComment();
   }
 });
 
@@ -76,6 +78,11 @@ function handleTweetBtnClick() {
   tweetInput.value = "";
 }
 
+function addComment() {
+  const commentInput = document.getElementById("comment-input").value;
+  console.log(commentInput);
+}
+
 function getFeedHtml() {
   let feedHtml = ``;
 
@@ -103,8 +110,32 @@ function getFeedHtml() {
                     <p class="tweet-text">${reply.tweetText}</p>
                 </div>
             </div>
-    </div>`;
+    </div>
+`;
       });
+      repliesHtml += `    
+    <div class="tweet-reply">
+    <div class="tweet-inner">
+        <img src="./images/scrimbalogo.png" class="profile-pic">
+            <div>
+                <p class="handle">@Scrimba</p>
+                <p class="tweet-text"><textarea placeholder="Add a comment..." id="comment-input"></textarea></p>
+            </div>
+        </div>
+        <button id="addTweetComment">Add</button>
+</div>`;
+    } else {
+      repliesHtml += `
+      <div class="tweet-reply">
+      <div class="tweet-inner">
+          <img src="./images/scrimbalogo.png" class="profile-pic">
+              <div>
+                  <p class="handle">@Scrimba</p>
+                  <p class="tweet-text"><textarea placeholder="Add a comment..." id="comment-input"></textarea></p>
+              </div>
+          </div>
+          <button id="addTweetComment">Add</button>
+  </div>`;
     }
 
     feedHtml += `
