@@ -132,3 +132,8 @@ button {
 .hidden {
   display: none;
 }
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}

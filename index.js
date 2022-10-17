@@ -91,7 +91,8 @@ function addComment(replyUuid) {
     return replyUuid === tweet.uuid;
   })[0];
 
-  targetTweet.replies.unshift(newComment);
+  targetTweet.replies.push(newComment);
+
   render();
 }
 
