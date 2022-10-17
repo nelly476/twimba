@@ -18,8 +18,10 @@ document.addEventListener("click", function (e) {
     handleReplyClick(e.target.dataset.reply);
   } else if (e.target.id === "tweet-btn") {
     handleTweetBtnClick();
-  } else if (e.target.id === "addTweetComment") {
-    addComment();
+  } else if (e.target.dataset.comment) {
+    addComment(e.target.dataset.comment);
+  } else if (e.target.dataset.close) {
+    closeTweet(e.target.dataset.close);
   }
 });
 
@@ -78,9 +80,30 @@ function handleTweetBtnClick() {
   tweetInput.value = "";
 }
 
-function addComment() {
-  const commentInput = document.getElementById("comment-input").value;
-  console.log(commentInput);
+function addComment(replyUuid) {
+  const commentInput = document.getElementById(`tweet-input-${replyUuid}`);
+  const newComment = {
+    handle: `@Scrimba`,
+    profilePic: `images/scrimbalogo.png`,
+    tweetText: commentInput.value,
+  };
+  const targetTweet = tweetsData.filter(function (tweet) {
+    return replyUuid === tweet.uuid;
+  })[0];
+
+  targetTweet.replies.unshift(newComment);
+  render();
+}
+
+function closeTweet(tweetId) {
+  const targetTweet = tweetsData.filter(function (tweet) {
+    return tweetId === tweet.uuid;
+  })[0];
+  const index = tweetsData.indexOf(targetTweet);
+  if (index > -1) {
+    tweetsData.splice(index, 1);
+  }
+  render();
 }
 
 function getFeedHtml() {
@@ -113,37 +136,26 @@ function getFeedHtml() {
     </div>
 `;
       });
-      repliesHtml += `    
-    <div class="tweet-reply">
-    <div class="tweet-inner">
-        <img src="./images/scrimbalogo.png" class="profile-pic">
-            <div>
-                <p class="handle">@Scrimba</p>
-                <p class="tweet-text"><textarea placeholder="Add a comment..." id="comment-input"></textarea></p>
-            </div>
-        </div>
-        <button id="addTweetComment">Add</button>
-</div>`;
-    } else {
-      repliesHtml += `
-      <div class="tweet-reply">
-      <div class="tweet-inner">
-          <img src="./images/scrimbalogo.png" class="profile-pic">
-              <div>
-                  <p class="handle">@Scrimba</p>
-                  <p class="tweet-text"><textarea placeholder="Add a comment..." id="comment-input"></textarea></p>
-              </div>
-          </div>
-          <button id="addTweetComment">Add</button>
-  </div>`;
     }
+    repliesHtml += `    
+            <div class="reply">
+                <textarea placeholder="Add a reply..." id="tweet-input-${tweet.uuid}"></textarea>
+                <button 
+                    class="reply-btn" 
+                    data-comment="${tweet.uuid}"
+                >Reply</button>
+            </div>
+            `;
 
     feedHtml += `
     <div class="tweet">
 <div class="tweet-inner">
     <img src="${tweet.profilePic}" class="profile-pic">
     <div>
+    <div class="flex">
         <p class="handle">${tweet.handle}</p>
+        <i class="fa-solid fa-xmark" data-close="${tweet.uuid}"></i>
+        </div>
         <p class="tweet-text">${tweet.tweetText}</p>
         <div class="tweet-details">
             <span class="tweet-detail">
@@ -164,7 +176,7 @@ function getFeedHtml() {
 <div class="hidden" id="replies-${tweet.uuid}">
 ${repliesHtml}
 </div>  
-</div>`;
+</dive>`;
   });
 
   return feedHtml;
@@ -176,3 +188,7 @@ function render() {
 }
 
 render();
+
+// <div class="hidden" id="comments-${tweet.uuid}">
+// ${commentsHtml}
+// </div>
